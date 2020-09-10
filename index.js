@@ -1,11 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const fetch = require("node-fetch");
+const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 8000;
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+
+app.use(cors());
 
 function standardFetch(res, path) {
   fetch(path)
