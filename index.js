@@ -76,7 +76,7 @@ app.get("/fetchSingleReview/:reviewID", (req, res) => {
 app.get("/scrapeSingleReview/:reviewID", (req, res) => {
   const { reviewID } = req.params;
   (async () => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(`https://www.themoviedb.org/review/${reviewID}`);
 
