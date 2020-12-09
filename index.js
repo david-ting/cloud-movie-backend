@@ -100,7 +100,8 @@ app.get("/scrapeSingleReview/:reviewID", (req, res) => {
     res.status(200).json(review);
 
     await browser.close();
-  })().catch(() => {
+  })().catch((err) => {
+    console.error(err);
     res.status(500).end();
   });
 });
