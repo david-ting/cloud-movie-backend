@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const fetch = require("node-fetch");
+const puppeteer = require("puppeteer");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 8000;
@@ -72,6 +73,38 @@ app.get("/fetchSingleReview/:reviewID", (req, res) => {
   standardFetch(res, path);
 });
 
+app.get("/scrapeSingleReview/:reviewID", (req, res) => {
+  const { reviewID } = req.params;
+  (async () => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(`https://www.themoviedb.org/review/${reviewID}`);
+
+    const review = await page.evaluate(() => {
+      const content = [];
+
+      const paragraphs = document
+        .querySelectorAll(".content")[1]
+        .querySelectorAll("p");
+      paragraphs.forEach((p) => {
+        content.push(p.textContent);
+      });
+      const author = document
+        .querySelectorAll(".content")[1]
+        .querySelector(".sub-heading")
+        .querySelector("a").textContent;
+      return { author, content };
+    });
+
+    review.id = reviewID;
+    res.status(200).json(review);
+
+    await browser.close();
+  })().catch(() => {
+    res.status(500).end();
+  });
+});
+
 app.get("/fetchYoutubeVidoDetail/:videoID", (req, res) => {
   const { videoID } = req.params;
   const path = `https://www.googleapis.com/youtube/v3/videos?id=${videoID}&key=${YOUTUBE_API_KEY}
@@ -80,5 +113,5 @@ app.get("/fetchYoutubeVidoDetail/:videoID", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`listening at port: ${port}`);
 });

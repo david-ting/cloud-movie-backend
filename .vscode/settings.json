@@ -1,0 +1,11 @@
+{
+  "eslint.enable": true,
+  "eslint.packageManager": "npm",
+  "eslint.validate": ["javascript"],
+  "eslint.workingDirectories": ["express-app"],
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
