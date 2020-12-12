@@ -27,13 +27,16 @@ function standardFetch(res, path) {
       const match = err.toString().match(regex);
       const statusFound = match ? parseInt(match[1]) : null;
       const status = statusFound ? statusFound : 500;
+      console.error(err);
       res.status(status).end();
     });
 }
 
 app.get("/searchOneType/:type/:name/:page", (req, res) => {
   const { type, name, page } = req.params;
-  const path = `https://api.themoviedb.org/3/search/${type}?api_key=${TMDB_API_KEY}&language=en-US&query=${name}&page=${page}&include_adult=false`;
+  const path = `https://api.themoviedb.org/3/search/${type}?api_key=${TMDB_API_KEY}&language=en-US&query=${encodeURIComponent(
+    name
+  )}&page=${page}&include_adult=false`;
   standardFetch(res, path);
 });
 
