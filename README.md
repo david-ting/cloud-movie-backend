@@ -6,3 +6,6 @@ It uses Node.js as a Web Server (with [**Express**](https://expressjs.com/) fram
 
 As the [**TMDb API**](https://developers.themoviedb.org/3/getting-started/introduction) may not supply enough data for the project, [**puppeteer**](https://www.npmjs.com/package/puppeteer) is also used to scrap the data from the TMDb websites. 
 
+#### Environmental variable
+* TMDB_API_KEY
+* YOUTUBE_API_KEY
